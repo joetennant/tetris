@@ -135,13 +135,16 @@ export interface WallKickData {
 // ============================================================================
 
 /**
- * The game board
+ * The game board interface
  */
-export interface Playfield {
-  grid: Cell[][];          // 40 rows x 10 columns
-  width: number;           // Always 10
-  height: number;          // Always 40 (20 visible + 20 buffer)
-  visibleHeight: number;   // Always 20
+export interface IPlayfield {
+  getGrid(): Readonly<Cell[][]>;
+  isValidPosition(tetromino: Tetromino, position: Position): boolean;
+  lockPiece(tetromino: Tetromino): void;
+  detectCompletedLines(): number[];
+  clearLines(rowIndices: number[]): void;
+  isGameOver(): boolean;
+  reset(): void;
 }
 
 // ============================================================================
@@ -152,7 +155,7 @@ export interface Playfield {
  * Complete game state
  */
 export interface GameState {
-  playfield: Playfield;
+  playfield: IPlayfield;
   currentPiece: Tetromino | null;
   heldPiece: Tetromino | null;
   nextPieces: Tetromino[];

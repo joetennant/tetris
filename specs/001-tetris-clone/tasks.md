@@ -65,59 +65,59 @@ All paths relative to `my-app/` directory:
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T015 [P] [US1] Create tests/unit/Randomizer.test.ts with basic randomizer initialization test
-- [ ] T016 [P] [US1] Create tests/unit/Playfield.test.ts with empty grid initialization test
-- [ ] T017 [P] [US1] Create tests/unit/TetrominoController.test.ts with basic collision detection test
-- [ ] T018 [P] [US1] Add test in Randomizer.test.ts: verify all 7 pieces appear once per 7 draws (7-bag fairness)
-- [ ] T019 [P] [US1] Add test in Playfield.test.ts: collision detection with bottom boundary
-- [ ] T020 [P] [US1] Add test in Playfield.test.ts: collision detection with side walls
-- [ ] T021 [P] [US1] Add test in Playfield.test.ts: collision detection with locked pieces
-- [ ] T022 [P] [US1] Add test in Playfield.test.ts: detect single completed line
-- [ ] T023 [P] [US1] Add test in Playfield.test.ts: detect multiple completed lines simultaneously
-- [ ] T024 [P] [US1] Add test in Playfield.test.ts: clear lines and collapse rows correctly
-- [ ] T025 [P] [US1] Add test in TetrominoController.test.ts: SRS rotation with no obstacles
-- [ ] T026 [P] [US1] Add test in TetrominoController.test.ts: SRS wall kick sequence (attempt all 5 offsets)
-- [ ] T027 [P] [US1] Add test in TetrominoController.test.ts: I-piece uses unique kick table
-- [ ] T028 [P] [US1] Add test in TetrominoController.test.ts: O-piece rotation is no-op (symmetrical)
+- [X] T015 [P] [US1] Create tests/unit/Randomizer.test.ts with basic randomizer initialization test
+- [X] T016 [P] [US1] Create tests/unit/Playfield.test.ts with empty grid initialization test
+- [X] T017 [P] [US1] Create tests/unit/TetrominoController.test.ts with basic collision detection test
+- [X] T018 [P] [US1] Add test in Randomizer.test.ts: verify all 7 pieces appear once per 7 draws (7-bag fairness)
+- [X] T019 [P] [US1] Add test in Playfield.test.ts: collision detection with bottom boundary
+- [X] T020 [P] [US1] Add test in Playfield.test.ts: collision detection with side walls
+- [X] T021 [P] [US1] Add test in Playfield.test.ts: collision detection with locked pieces
+- [X] T022 [P] [US1] Add test in Playfield.test.ts: detect single completed line
+- [X] T023 [P] [US1] Add test in Playfield.test.ts: detect multiple completed lines simultaneously
+- [X] T024 [P] [US1] Add test in Playfield.test.ts: clear lines and collapse rows correctly
+- [X] T025 [P] [US1] Add test in TetrominoController.test.ts: SRS rotation with no obstacles
+- [X] T026 [P] [US1] Add test in TetrominoController.test.ts: SRS wall kick sequence (attempt all 5 offsets)
+- [X] T027 [P] [US1] Add test in TetrominoController.test.ts: I-piece uses unique kick table
+- [X] T028 [P] [US1] Add test in TetrominoController.test.ts: O-piece rotation is no-op (symmetrical)
 
 ### Implementation for User Story 1
 
 **Core Game Logic (Framework-Agnostic)**
 
-- [ ] T029 [P] [US1] Implement src/game/Randomizer.ts: SevenBagRandomizer class with Fisher-Yates shuffle
-- [ ] T030 [P] [US1] Implement src/game/Playfield.ts: initialize 40x10 grid with Cell objects
-- [ ] T031 [US1] Add Playfield.isValidPosition(tetromino, position): collision detection algorithm
-- [ ] T032 [US1] Add Playfield.lockPiece(tetromino): transfer piece blocks to grid cells
-- [ ] T033 [US1] Add Playfield.detectCompletedLines(): scan grid for full rows, return indices
-- [ ] T034 [US1] Add Playfield.clearLines(rowIndices): remove rows and shift down
-- [ ] T035 [US1] Add Playfield.isGameOver(): check if spawn position is blocked
-- [ ] T036 [P] [US1] Implement src/game/TetrominoController.ts: constructor with playfield reference
-- [ ] T037 [US1] Add TetrominoController.rotate(tetromino, direction): apply SRS with wall kick attempts
-- [ ] T038 [US1] Add TetrominoController.move(tetromino, dx, dy): translate position with collision check
-- [ ] T039 [US1] Add TetrominoController.hardDrop(tetromino): drop to lowest valid position instantly
-- [ ] T040 [US1] Implement src/game/GameState.ts: GameStateManager class with initial state setup
-- [ ] T041 [US1] Add GameState.spawnPiece(): get piece from randomizer, place at spawn position
-- [ ] T042 [US1] Add GameState.update(deltaTime): handle automatic falling based on fallSpeed
-- [ ] T043 [US1] Add GameState.handleLockDelay(deltaTime): manage lock timer and reset counter
-- [ ] T044 [US1] Add GameState.lockCurrentPiece(): lock piece, check lines, spawn next, handle game over
-- [ ] T045 [US1] Add GameState.handleInput(input): process player input commands (move, rotate, drop)
-- [ ] T046 [US1] Add GameState.start(): initialize new game state
-- [ ] T047 [US1] Add GameState.pause/resume(): toggle game status
+- [X] T029 [P] [US1] Implement src/game/Randomizer.ts: SevenBagRandomizer class with Fisher-Yates shuffle
+- [X] T030 [P] [US1] Implement src/game/Playfield.ts: initialize 40x10 grid with Cell objects
+- [X] T031 [US1] Add Playfield.isValidPosition(tetromino, position): collision detection algorithm
+- [X] T032 [US1] Add Playfield.lockPiece(tetromino): transfer piece blocks to grid cells
+- [X] T033 [US1] Add Playfield.detectCompletedLines(): scan grid for full rows, return indices
+- [X] T034 [US1] Add Playfield.clearLines(rowIndices): remove rows and shift down
+- [X] T035 [US1] Add Playfield.isGameOver(): check if spawn position is blocked
+- [X] T036 [P] [US1] Implement src/game/TetrominoController.ts: constructor with playfield reference
+- [X] T037 [US1] Add TetrominoController.rotate(tetromino, direction): apply SRS with wall kick attempts
+- [X] T038 [US1] Add TetrominoController.move(tetromino, dx, dy): translate position with collision check
+- [X] T039 [US1] Add TetrominoController.hardDrop(tetromino): drop to lowest valid position instantly
+- [X] T040 [US1] Implement src/game/GameState.ts: GameStateManager class with initial state setup
+- [X] T041 [US1] Add GameState.spawnPiece(): get piece from randomizer, place at spawn position
+- [X] T042 [US1] Add GameState.update(deltaTime): handle automatic falling based on fallSpeed
+- [X] T043 [US1] Add GameState.handleLockDelay(deltaTime): manage lock timer and reset counter
+- [X] T044 [US1] Add GameState.lockCurrentPiece(): lock piece, check lines, spawn next, handle game over
+- [X] T045 [US1] Add GameState.handleInput(input): process player input commands (move, rotate, drop)
+- [X] T046 [US1] Add GameState.start(): initialize new game state
+- [X] T047 [US1] Add GameState.pause/resume(): toggle game status
 
 **React Integration**
 
-- [ ] T048 [P] [US1] Implement src/hooks/useGameLoop.ts: custom hook with requestAnimationFrame
-- [ ] T049 [P] [US1] Implement src/hooks/useKeyboard.ts: track key press/release state
-- [ ] T050 [US1] Implement src/hooks/useGameState.ts: wrap GameStateManager, expose state and control functions
-- [ ] T051 [US1] Create src/components/Playfield.tsx: render 10x20 grid using CSS Grid layout
-- [ ] T052 [US1] Create src/components/Tetromino.tsx: render tetromino blocks at position
-- [ ] T053 [US1] Add ScorePanel.tsx basic structure: display score, level, lines cleared
-- [ ] T054 [US1] Create src/components/GameOverlay.tsx: show pause and game over states
-- [ ] T055 [US1] Create src/components/Game.tsx: main container integrating all components
-- [ ] T056 [US1] Update src/App.tsx: render Game component
-- [ ] T057 [US1] Add CSS styling for playfield grid and tetromino blocks with colors from constants
-- [ ] T058 [US1] Wire keyboard input to GameState.handleInput() in Game component
-- [ ] T059 [US1] Wire game loop to GameState.update() in Game component
+- [X] T048 [P] [US1] Implement src/hooks/useGameLoop.ts: custom hook with requestAnimationFrame
+- [X] T049 [P] [US1] Implement src/hooks/useKeyboard.ts: track key press/release state
+- [X] T050 [US1] Implement src/hooks/useGameState.ts: wrap GameStateManager, expose state and control functions
+- [X] T051 [US1] Create src/components/Playfield.tsx: render 10x20 grid using CSS Grid layout
+- [X] T052 [US1] Create src/components/Tetromino.tsx: render tetromino blocks at position
+- [X] T053 [US1] Add ScorePanel.tsx basic structure: display score, level, lines cleared
+- [X] T054 [US1] Create src/components/GameOverlay.tsx: show pause and game over states
+- [X] T055 [US1] Create src/components/Game.tsx: main container integrating all components
+- [X] T056 [US1] Update src/App.tsx: render Game component
+- [X] T057 [US1] Add CSS styling for playfield grid and tetromino blocks with colors from constants
+- [X] T058 [US1] Wire keyboard input to GameState.handleInput() in Game component
+- [X] T059 [US1] Wire game loop to GameState.update() in Game component
 - [ ] T060 [US1] Test automatic piece falling at correct speed
 
 **Integration Test**
