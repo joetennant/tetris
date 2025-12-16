@@ -7,7 +7,7 @@ export class SoundManager {
   private enabled: boolean = true;
   private musicEnabled: boolean = true;
   private currentMusicTimeout: number | null = null;
-  private musicTempo: number = 120; // BPM
+  private musicTempo: number = 150; // BPM
   private isMusicPlaying: boolean = false;
 
   constructor() {
@@ -222,61 +222,259 @@ export class SoundManager {
   private playMusicSequence(): void {
     if (!this.musicEnabled || !this.enabled) return;
 
-    // Original chiptune melody in C major
-    // Structure: melody notes with timing (frequency in Hz, beats)
+    // Enhanced Tetris Theme (Korobeiniki) - Sophisticated arrangement
+    // Main melody with harmony, countermelody, and rich bass
     const melody = [
-      // Phrase 1
+      // Measure 1
+      { freq: 659.25, beats: 1 },    // E5
+      { freq: 493.88, beats: 0.5 },  // B4
+      { freq: 523.25, beats: 0.5 },  // C5
+      { freq: 587.33, beats: 1 },    // D5
+      { freq: 523.25, beats: 0.5 },  // C5
+      { freq: 493.88, beats: 0.5 },  // B4
+      
+      // Measure 2
+      { freq: 440.00, beats: 1 },    // A4
+      { freq: 440.00, beats: 0.5 },  // A4
+      { freq: 523.25, beats: 0.5 },  // C5
+      { freq: 659.25, beats: 1 },    // E5
+      { freq: 587.33, beats: 0.5 },  // D5
+      { freq: 523.25, beats: 0.5 },  // C5
+      
+      // Measure 3
+      { freq: 493.88, beats: 1.5 },  // B4
+      { freq: 523.25, beats: 0.5 },  // C5
+      { freq: 587.33, beats: 1 },    // D5
+      { freq: 659.25, beats: 1 },    // E5
+      
+      // Measure 4
+      { freq: 523.25, beats: 1 },    // C5
+      { freq: 440.00, beats: 1 },    // A4
+      { freq: 440.00, beats: 1 },    // A4
+      { freq: 0, beats: 0.5 },       // rest
+      { freq: 587.33, beats: 0.5 },  // D5
+      
+      // Measure 5 (bridge section)
+      { freq: 698.46, beats: 1 },    // F5
+      { freq: 880.00, beats: 0.5 },  // A5
+      { freq: 698.46, beats: 0.5 },  // F5
+      { freq: 659.25, beats: 1 },    // E5
       { freq: 523.25, beats: 0.5 },  // C5
       { freq: 659.25, beats: 0.5 },  // E5
-      { freq: 783.99, beats: 0.5 },  // G5
-      { freq: 1046.50, beats: 0.5 }, // C6
-      { freq: 783.99, beats: 0.5 },  // G5
-      { freq: 659.25, beats: 0.5 },  // E5
-      { freq: 523.25, beats: 1 },    // C5
-      { freq: 0, beats: 0.5 },       // rest
       
-      // Phrase 2
-      { freq: 587.33, beats: 0.5 },  // D5
-      { freq: 659.25, beats: 0.5 },  // E5
-      { freq: 698.46, beats: 0.5 },  // F5
-      { freq: 783.99, beats: 0.5 },  // G5
-      { freq: 659.25, beats: 0.5 },  // E5
-      { freq: 587.33, beats: 0.5 },  // D5
-      { freq: 523.25, beats: 1 },    // C5
-      { freq: 0, beats: 0.5 },       // rest
+      // Measure 6
+      { freq: 587.33, beats: 1.5 },  // D5
+      { freq: 523.25, beats: 0.5 },  // C5
+      { freq: 493.88, beats: 1 },    // B4
+      { freq: 493.88, beats: 0.5 },  // B4
+      { freq: 523.25, beats: 0.5 },  // C5
       
-      // Phrase 3
-      { freq: 659.25, beats: 0.5 },  // E5
-      { freq: 783.99, beats: 0.5 },  // G5
-      { freq: 880.00, beats: 0.5 },  // A5
-      { freq: 1046.50, beats: 0.5 }, // C6
-      { freq: 880.00, beats: 0.5 },  // A5
-      { freq: 783.99, beats: 0.5 },  // G5
+      // Measure 7
+      { freq: 587.33, beats: 1 },    // D5
       { freq: 659.25, beats: 1 },    // E5
-      { freq: 0, beats: 0.5 },       // rest
+      { freq: 523.25, beats: 1 },    // C5
+      { freq: 440.00, beats: 1 },    // A4
       
-      // Phrase 4
+      // Measure 8
+      { freq: 440.00, beats: 2 },    // A4
+      { freq: 0, beats: 2 },         // rest
+    ];
+
+    // Harmony line (third above or below melody)
+    const harmony = [
+      // Measure 1
+      { freq: 523.25, beats: 1 },    // C5 (harmony)
+      { freq: 392.00, beats: 0.5 },  // G4
+      { freq: 440.00, beats: 0.5 },  // A4
+      { freq: 493.88, beats: 1 },    // B4
+      { freq: 440.00, beats: 0.5 },  // A4
+      { freq: 392.00, beats: 0.5 },  // G4
+      
+      // Measure 2
+      { freq: 329.63, beats: 1 },    // E4
+      { freq: 329.63, beats: 0.5 },  // E4
+      { freq: 392.00, beats: 0.5 },  // G4
+      { freq: 523.25, beats: 1 },    // C5
+      { freq: 493.88, beats: 0.5 },  // B4
+      { freq: 440.00, beats: 0.5 },  // A4
+      
+      // Measure 3
+      { freq: 392.00, beats: 1.5 },  // G4
+      { freq: 440.00, beats: 0.5 },  // A4
+      { freq: 493.88, beats: 1 },    // B4
+      { freq: 523.25, beats: 1 },    // C5
+      
+      // Measure 4
+      { freq: 440.00, beats: 1 },    // A4
+      { freq: 329.63, beats: 1 },    // E4
+      { freq: 329.63, beats: 1 },    // E4
+      { freq: 0, beats: 0.5 },       // rest
+      { freq: 493.88, beats: 0.5 },  // B4
+      
+      // Measure 5
+      { freq: 587.33, beats: 1 },    // D5
       { freq: 698.46, beats: 0.5 },  // F5
-      { freq: 783.99, beats: 0.5 },  // G5
-      { freq: 880.00, beats: 0.5 },  // A5
-      { freq: 783.99, beats: 0.5 },  // G5
-      { freq: 698.46, beats: 0.5 },  // F5
-      { freq: 659.25, beats: 0.5 },  // E5
+      { freq: 587.33, beats: 0.5 },  // D5
+      { freq: 523.25, beats: 1 },    // C5
+      { freq: 440.00, beats: 0.5 },  // A4
+      { freq: 523.25, beats: 0.5 },  // C5
+      
+      // Measure 6
+      { freq: 493.88, beats: 1.5 },  // B4
+      { freq: 440.00, beats: 0.5 },  // A4
+      { freq: 392.00, beats: 1 },    // G4
+      { freq: 392.00, beats: 0.5 },  // G4
+      { freq: 440.00, beats: 0.5 },  // A4
+      
+      // Measure 7
+      { freq: 493.88, beats: 1 },    // B4
+      { freq: 523.25, beats: 1 },    // C5
+      { freq: 440.00, beats: 1 },    // A4
+      { freq: 329.63, beats: 1 },    // E4
+      
+      // Measure 8
+      { freq: 329.63, beats: 2 },    // E4
+      { freq: 0, beats: 2 },         // rest
+    ];
+
+    // Walking bass line with chord roots and fifths
+    const bass = [
+      // Measure 1
+      { freq: 164.81, beats: 1 },    // E3
+      { freq: 246.94, beats: 1 },    // B3 (fifth)
+      { freq: 196.00, beats: 1 },    // G3
+      { freq: 246.94, beats: 1 },    // B3
+      
+      // Measure 2
+      { freq: 220.00, beats: 1 },    // A3
+      { freq: 329.63, beats: 1 },    // E4 (fifth)
+      { freq: 164.81, beats: 1 },    // E3
+      { freq: 246.94, beats: 1 },    // B3
+      
+      // Measure 3
+      { freq: 246.94, beats: 1 },    // B3
+      { freq: 196.00, beats: 1 },    // G3
+      { freq: 196.00, beats: 1 },    // G3
+      { freq: 293.66, beats: 1 },    // D4 (fifth)
+      
+      // Measure 4
+      { freq: 220.00, beats: 1 },    // A3
+      { freq: 329.63, beats: 1 },    // E4
+      { freq: 220.00, beats: 1 },    // A3
+      { freq: 196.00, beats: 1 },    // G3
+      
+      // Measure 5
+      { freq: 174.61, beats: 1 },    // F3
+      { freq: 261.63, beats: 1 },    // C4 (fifth)
+      { freq: 220.00, beats: 1 },    // A3
+      { freq: 329.63, beats: 1 },    // E4
+      
+      // Measure 6
+      { freq: 196.00, beats: 1 },    // G3
+      { freq: 293.66, beats: 1 },    // D4
+      { freq: 246.94, beats: 1 },    // B3
+      { freq: 196.00, beats: 1 },    // G3
+      
+      // Measure 7
+      { freq: 196.00, beats: 1 },    // G3
+      { freq: 293.66, beats: 1 },    // D4
+      { freq: 220.00, beats: 1 },    // A3
+      { freq: 329.63, beats: 1 },    // E4
+      
+      // Measure 8
+      { freq: 220.00, beats: 1.5 },  // A3
+      { freq: 164.81, beats: 0.5 },  // E3 (walkdown)
+      { freq: 0, beats: 2 },         // rest
+    ];
+
+    // Countermelody (plays during second half of loop for interest)
+    const counter = [
+      // Measures 1-4: rest
+      { freq: 0, beats: 16 },
+      
+      // Measure 5: active countermelody
+      { freq: 440.00, beats: 0.5 },  // A4
+      { freq: 523.25, beats: 0.5 },  // C5
+      { freq: 659.25, beats: 1 },    // E5
+      { freq: 587.33, beats: 1 },    // D5
+      { freq: 440.00, beats: 1 },    // A4
+      
+      // Measure 6
+      { freq: 493.88, beats: 0.5 },  // B4
+      { freq: 587.33, beats: 0.5 },  // D5
+      { freq: 523.25, beats: 1 },    // C5
+      { freq: 392.00, beats: 0.5 },  // G4
+      { freq: 440.00, beats: 0.5 },  // A4
+      { freq: 493.88, beats: 1 },    // B4
+      
+      // Measure 7
+      { freq: 523.25, beats: 0.5 },  // C5
+      { freq: 587.33, beats: 0.5 },  // D5
+      { freq: 659.25, beats: 1 },    // E5
       { freq: 587.33, beats: 1 },    // D5
       { freq: 523.25, beats: 1 },    // C5
+      
+      // Measure 8
+      { freq: 440.00, beats: 1 },    // A4
+      { freq: 329.63, beats: 1 },    // E4
+      { freq: 0, beats: 2 },         // rest
     ];
 
     let currentTime = 0;
+    
+    // Play melody
     melody.forEach((note) => {
       if (note.freq > 0) {
         setTimeout(() => {
           if (this.isMusicPlaying) {
             const duration = this.getMusicNoteLength(note.beats);
-            this.playMusicNote(note.freq, duration / 1000, 0.08);
+            this.playMusicNote(note.freq, duration / 1000, 0.09);
           }
         }, currentTime);
       }
       currentTime += this.getMusicNoteLength(note.beats);
+    });
+
+    // Play harmony
+    let harmonyTime = 0;
+    harmony.forEach((note) => {
+      if (note.freq > 0) {
+        setTimeout(() => {
+          if (this.isMusicPlaying) {
+            const duration = this.getMusicNoteLength(note.beats);
+            this.playMusicNote(note.freq, duration / 1000, 0.06);
+          }
+        }, harmonyTime);
+      }
+      harmonyTime += this.getMusicNoteLength(note.beats);
+    });
+
+    // Play bass
+    let bassTime = 0;
+    bass.forEach((note) => {
+      if (note.freq > 0) {
+        setTimeout(() => {
+          if (this.isMusicPlaying) {
+            const duration = this.getMusicNoteLength(note.beats);
+            this.playMusicNote(note.freq, duration / 1000, 0.05);
+          }
+        }, bassTime);
+      }
+      bassTime += this.getMusicNoteLength(note.beats);
+    });
+
+    // Play countermelody
+    let counterTime = 0;
+    counter.forEach((note) => {
+      if (note.freq > 0) {
+        setTimeout(() => {
+          if (this.isMusicPlaying) {
+            const duration = this.getMusicNoteLength(note.beats);
+            this.playMusicNote(note.freq, duration / 1000, 0.04);
+          }
+        }, counterTime);
+      }
+      counterTime += this.getMusicNoteLength(note.beats);
     });
 
     // Loop the music
@@ -292,9 +490,10 @@ export class SoundManager {
     
     // Map game speed to music tempo
     // Faster game = faster tempo
-    // gameSpeed ranges from ~1000ms (slow) to ~100ms (fast)
-    // Map to tempo from 100 BPM (slow) to 200 BPM (fast)
-    this.musicTempo = Math.max(100, Math.min(200, 100 + (1000 - gameSpeed) / 10));
+    // gameSpeed ranges from ~1000ms (slow/level 1) to ~100ms (fast/high level)
+    // Map to tempo: 120 BPM at level 1, scaling up to 240 BPM at fastest
+    // Formula: 120 + (1000 - gameSpeed) * 0.133
+    this.musicTempo = Math.max(120, Math.min(240, 120 + (1000 - gameSpeed) * 0.133));
     
     this.isMusicPlaying = true;
     this.playMusicSequence();
@@ -310,7 +509,8 @@ export class SoundManager {
 
   public updateMusicTempo(gameSpeed: number): void {
     // Update tempo based on game speed
-    this.musicTempo = Math.max(100, Math.min(200, 100 + (1000 - gameSpeed) / 10));
+    // 120 BPM at level 1 (1000ms), scaling up to 240 BPM at fastest
+    this.musicTempo = Math.max(120, Math.min(240, 120 + (1000 - gameSpeed) * 0.133));
   }
 
   public setMusicEnabled(enabled: boolean): void {
