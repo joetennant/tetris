@@ -188,33 +188,33 @@ All paths relative to `my-app/` directory:
 
 ### Unit Tests for User Story 4
 
-- [ ] T085 [P] [US4] Create tests/unit/ScoreManager.test.ts: single line awards 100 × level points
-- [ ] T086 [P] [US4] Add test in ScoreManager.test.ts: double (2 lines) awards 300 × level points
-- [ ] T087 [P] [US4] Add test in ScoreManager.test.ts: triple (3 lines) awards 500 × level points
-- [ ] T088 [P] [US4] Add test in ScoreManager.test.ts: Tetris (4 lines) awards 800 × level points
-- [ ] T089 [P] [US4] Add test in ScoreManager.test.ts: soft drop awards 1 point per cell
-- [ ] T090 [P] [US4] Add test in ScoreManager.test.ts: hard drop awards 2 points per cell
-- [ ] T091 [P] [US4] Add test in ScoreManager.test.ts: level increases at 10, 20, 30 lines cleared
-- [ ] T092 [P] [US4] Add test in ScoreManager.test.ts: fall speed decreases by 10% per level
+- [X] T085 [P] [US4] Create tests/unit/ScoreManager.test.ts: single line awards 100 × level points
+- [X] T086 [P] [US4] Add test in ScoreManager.test.ts: double (2 lines) awards 300 × level points
+- [X] T087 [P] [US4] Add test in ScoreManager.test.ts: triple (3 lines) awards 500 × level points
+- [X] T088 [P] [US4] Add test in ScoreManager.test.ts: Tetris (4 lines) awards 800 × level points
+- [X] T089 [P] [US4] Add test in ScoreManager.test.ts: soft drop awards 1 point per cell
+- [X] T090 [P] [US4] Add test in ScoreManager.test.ts: hard drop awards 2 points per cell
+- [X] T091 [P] [US4] Add test in ScoreManager.test.ts: level increases at 10, 20, 30 lines cleared
+- [X] T092 [P] [US4] Add test in ScoreManager.test.ts: fall speed decreases by 10% per level
 
 ### Implementation for User Story 4
 
-- [ ] T093 [P] [US4] Implement src/game/ScoreManager.ts: ScoreManager class with scoring formulas
-- [ ] T094 [US4] Add ScoreManager.calculateLineScore(linesCleared, level): apply scoring table
-- [ ] T095 [US4] Add ScoreManager.calculateDropScore(distance, isHardDrop): calculate drop points
-- [ ] T096 [US4] Add ScoreManager.calculateFallSpeed(level): apply speed formula
-- [ ] T097 [US4] Add ScoreManager.shouldLevelUp(linesCleared, currentLevel): check 10-line threshold
-- [ ] T098 [US4] Integrate ScoreManager in GameState constructor
-- [ ] T099 [US4] Update GameState.lockCurrentPiece(): award line clear score after clearing
-- [ ] T100 [US4] Update GameState.hardDrop(): award drop bonus points
-- [ ] T101 [US4] Update GameState: check and apply level up after line clear
-- [ ] T102 [US4] Update GameState: recalculate fallSpeed when level increases
-- [ ] T103 [US4] Update ScorePanel.tsx: display score, level, lines with real-time updates
-- [ ] T104 [US4] Add CSS styling for score panel with clear labels
-- [ ] T105 [US4] Test single line clear scoring
-- [ ] T106 [US4] Test Tetris (4 lines) bonus scoring
-- [ ] T107 [US4] Test level progression at 10 lines
-- [ ] T108 [US4] Test fall speed increase on level up
+- [X] T093 [P] [US4] Implement src/game/ScoreManager.ts: ScoreManager class with scoring formulas
+- [X] T094 [US4] Add ScoreManager.calculateLineScore(linesCleared, level): apply scoring table
+- [X] T095 [US4] Add ScoreManager.calculateDropScore(distance, isHardDrop): calculate drop points
+- [X] T096 [US4] Add ScoreManager.calculateFallSpeed(level): apply speed formula
+- [X] T097 [US4] Add ScoreManager.shouldLevelUp(linesCleared, currentLevel): check 10-line threshold
+- [X] T098 [US4] Integrate ScoreManager in GameState constructor
+- [X] T099 [US4] Update GameState.lockCurrentPiece(): award line clear score after clearing
+- [X] T100 [US4] Update GameState.hardDrop(): award drop bonus points
+- [X] T101 [US4] Update GameState: check and apply level up after line clear
+- [X] T102 [US4] Update GameState: recalculate fallSpeed when level increases
+- [X] T103 [US4] Update ScorePanel.tsx: display score, level, lines with real-time updates
+- [X] T104 [US4] Add CSS styling for score panel with clear labels
+- [X] T105 [US4] Test single line clear scoring
+- [X] T106 [US4] Test Tetris (4 lines) bonus scoring
+- [X] T107 [US4] Test level progression at 10 lines
+- [X] T108 [US4] Test fall speed increase on level up
 
 **Checkpoint**: Complete progression system - scoring and increasing difficulty
 
@@ -228,10 +228,10 @@ All paths relative to `my-app/` directory:
 
 ### Implementation for User Story 5
 
-- [ ] T109 [US5] Verify Randomizer.ts implements Fisher-Yates shuffle correctly (should already be done in T029)
-- [ ] T110 [US5] Verify GameState uses Randomizer for all piece generation (should already be done)
-- [ ] T111 [US5] Run existing Randomizer.test.ts: confirm 7-bag fairness test passes
-- [ ] T112 [US5] Manual test: play game for 20+ pieces, track sequence, verify no piece appears twice before all 7 appear
+- [X] T109 [US5] Verify Randomizer.ts implements Fisher-Yates shuffle correctly (should already be done in T029)
+- [X] T110 [US5] Verify GameState uses Randomizer for all piece generation (should already be done)
+- [X] T111 [US5] Run existing Randomizer.test.ts: confirm 7-bag fairness test passes
+- [X] T112 [US5] Manual test: play game for 20+ pieces, track sequence, verify no piece appears twice before all 7 appear
 
 **Checkpoint**: All user stories complete - full feature set implemented
 

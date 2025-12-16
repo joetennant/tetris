@@ -38,7 +38,10 @@ export const Input = {
   HARD_DROP: 'hardDrop',
   HOLD: 'hold',
   PAUSE: 'pause',
-  RESTART: 'restart'
+  RESTART: 'restart',
+  DEBUG_TOGGLE: 'debugToggle',
+  DEBUG_LEVEL_UP: 'debugLevelUp',
+  DEBUG_LEVEL_DOWN: 'debugLevelDown'
 } as const;
 
 export type Input = typeof Input[keyof typeof Input];
@@ -169,6 +172,7 @@ export interface GameState {
   lockResets: number;        // count of lock delay resets this piece
   lastDropTime: number;      // timestamp of last automatic drop
   lastLockMoveTime: number;  // timestamp of last move that reset lock
+  debugMode: boolean;        // debug mode enabled
 }
 
 // ============================================================================

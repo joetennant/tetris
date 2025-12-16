@@ -10,19 +10,22 @@ import { GameStatus, Input, RotationDirection } from './types';
 import { Playfield } from './Playfield';
 import { TetrominoController } from './TetrominoController';
 import { SevenBagRandomizer } from './Randomizer';
+import { ScoreManager } from './ScoreManager';
 import { createTetromino } from './tetrominoes';
-import { GAME_CONFIG, SCORE_VALUES } from './constants';
+import { GAME_CONFIG } from './constants';
 
 export class GameStateManager {
   private state: GameState;
   private playfield: IPlayfield;
   private controller: TetrominoController;
   private randomizer: SevenBagRandomizer;
+  private scoreManager: ScoreManager;
 
   constructor() {
     this.playfield = new Playfield();
     this.controller = new TetrominoController(this.playfield);
     this.randomizer = new SevenBagRandomizer();
+    this.scoreManager = new ScoreManager();
     this.state = this.createInitialState();
   }
 
@@ -50,6 +53,7 @@ export class GameStateManager {
       lockResets: 0,
       lastDropTime: 0,
       lastLockMoveTime: 0,
+      debugMode: false,
     };
   }
 
@@ -213,15 +217,14 @@ export class GameStateManager {
       this.playfield.clearLines(completedLines);
       
       // Award score
-      const lineScore = this.calculateLineScore(completedLines.length);
+      const lineScore = this.scoreManager.calculateLineScore(completedLines.length, this.state.level);
       this.state.score += lineScore;
       this.state.linesCleared += completedLines.length;
 
       // Check for level up
-      const newLevel = Math.floor(this.state.linesCleared / GAME_CONFIG.LINES_PER_LEVEL) + 1;
-      if (newLevel > this.state.level) {
-        this.state.level = newLevel;
-        this.state.fallSpeed = this.calculateFallSpeed(this.state.level);
+      if (this.scoreManager.shouldLevelUp(this.state.linesCleared, this.state.level)) {
+        this.state.level = this.scoreManager.getLevel(this.state.linesCleared);
+        this.state.fallSpeed = this.scoreManager.calculateFallSpeed(this.state.level);
       }
     }
 
@@ -229,32 +232,31 @@ export class GameStateManager {
     this.spawnPiece();
   }
 
-  /**
-   * Calculate score for line clears
-   */
-  private calculateLineScore(linesCleared: number): number {
-    const baseScores: Record<number, number> = {
-      1: SCORE_VALUES.SINGLE,
-      2: SCORE_VALUES.DOUBLE,
-      3: SCORE_VALUES.TRIPLE,
-      4: SCORE_VALUES.TETRIS,
-    };
 
-    const baseScore = baseScores[linesCleared] || 0;
-    return baseScore * this.state.level;
-  }
-
-  /**
-   * Calculate fall speed for level
-   */
-  private calculateFallSpeed(level: number): number {
-    return GAME_CONFIG.BASE_FALL_SPEED * Math.pow(GAME_CONFIG.FALL_SPEED_MULTIPLIER, level - 1);
-  }
 
   /**
    * Handle player input
    */
   handleInput(input: InputType): void {
+    // Handle debug commands anytime
+    if (input === Input.DEBUG_TOGGLE) {
+      this.state.debugMode = !this.state.debugMode;
+      return;
+    }
+
+    if (this.state.debugMode) {
+      if (input === Input.DEBUG_LEVEL_UP) {
+        this.state.level = Math.min(this.state.level + 1, 99);
+        this.state.fallSpeed = this.scoreManager.calculateFallSpeed(this.state.level);
+        return;
+      }
+      if (input === Input.DEBUG_LEVEL_DOWN) {
+        this.state.level = Math.max(this.state.level - 1, 1);
+        this.state.fallSpeed = this.scoreManager.calculateFallSpeed(this.state.level);
+        return;
+      }
+    }
+
     if (this.state.gameStatus !== GameStatus.PLAYING || !this.state.currentPiece) {
       // Handle pause in any state
       if (input === Input.PAUSE) {
@@ -306,14 +308,14 @@ export class GameStateManager {
         const droppedSoft = this.controller.move(this.state.currentPiece, 0, 1);
         if (droppedSoft) {
           this.state.currentPiece = droppedSoft;
-          this.state.score += SCORE_VALUES.SOFT_DROP;
+          this.state.score += this.scoreManager.calculateDropScore(1, false);
         }
         break;
 
       case Input.HARD_DROP:
         const result = this.controller.hardDrop(this.state.currentPiece);
         this.state.currentPiece = result.tetromino;
-        this.state.score += result.distance * SCORE_VALUES.HARD_DROP;
+        this.state.score += this.scoreManager.calculateDropScore(result.distance, true);
         this.lockCurrentPiece();
         break;
 

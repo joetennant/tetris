@@ -12,6 +12,7 @@ import { Playfield } from './Playfield';
 import { ScorePanel } from './ScorePanel';
 import { GameOverlay } from './GameOverlay';
 import { Controls } from './Controls';
+import { DebugPanel } from './DebugPanel';
 import { Input, GameStatus } from '../game/types';
 import { TetrominoController } from '../game/TetrominoController';
 
@@ -52,6 +53,14 @@ export function Game() {
     onKey('p', () => handleInput(Input.PAUSE));
     onKey('P', () => handleInput(Input.PAUSE));
     onKey('Escape', () => handleInput(Input.PAUSE));
+    
+    // Debug controls
+    onKey('d', () => handleInput(Input.DEBUG_TOGGLE));
+    onKey('D', () => handleInput(Input.DEBUG_TOGGLE));
+    onKey('+', () => handleInput(Input.DEBUG_LEVEL_UP));
+    onKey('=', () => handleInput(Input.DEBUG_LEVEL_UP)); // + key without shift
+    onKey('-', () => handleInput(Input.DEBUG_LEVEL_DOWN));
+    onKey('_', () => handleInput(Input.DEBUG_LEVEL_DOWN)); // - key without shift
   }, [handleInput, onKey]);
 
   // Game loop
@@ -77,6 +86,7 @@ export function Game() {
 
   return (
     <>
+      <DebugPanel gameState={gameState} />
       <div className="game-container">
         <div className="game-main">
           <Playfield
