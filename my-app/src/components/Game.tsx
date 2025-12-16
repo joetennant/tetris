@@ -61,6 +61,10 @@ export function Game() {
     onKey('=', () => handleInput(Input.DEBUG_LEVEL_UP)); // + key without shift
     onKey('-', () => handleInput(Input.DEBUG_LEVEL_DOWN));
     onKey('_', () => handleInput(Input.DEBUG_LEVEL_DOWN)); // - key without shift
+    onKey(']', () => handleInput(Input.DEBUG_SCORE_UP_SMALL));   // +1000
+    onKey('[', () => handleInput(Input.DEBUG_SCORE_DOWN_SMALL)); // -1000
+    onKey('}', () => handleInput(Input.DEBUG_SCORE_UP_LARGE));   // +10000
+    onKey('{', () => handleInput(Input.DEBUG_SCORE_DOWN_LARGE)); // -10000
   }, [handleInput, onKey]);
 
   // Game loop
@@ -93,6 +97,8 @@ export function Game() {
             grid={gameState.playfield.getGrid()}
             currentPiece={gameState.gameStatus === GameStatus.PLAYING ? gameState.currentPiece : null}
             ghostPiece={gameState.gameStatus === GameStatus.PLAYING ? ghostPiece : null}
+            clearingLines={gameState.clearingLines}
+            lockingPiece={gameState.lockingPiece}
           />
         </div>
         
@@ -103,55 +109,59 @@ export function Game() {
             linesCleared={gameState.linesCleared}
           />
           
-          {gameState.nextPieces.length > 0 && (
-            <div className="next-piece-container">
-              <h3>Next</h3>
-              <div className="next-piece-preview">
-                {gameState.nextPieces[0].matrix.map((row, y) => (
-                  <div key={y} className="preview-row">
-                    {row.map((cell, x) => 
-                      cell ? (
-                        <div
-                          key={x}
-                          className="preview-cell"
-                          style={{
-                            backgroundColor: gameState.nextPieces[0].color,
-                          }}
-                        />
-                      ) : (
-                        <div key={x} className="preview-cell-empty" />
-                      )
-                    )}
-                  </div>
-                ))}
-              </div>
+          <div className="next-piece-container">
+            <h3>Next</h3>
+            <div className="preview-box">
+              {gameState.nextPieces.length > 0 && (
+                <div className="preview-content">
+                  {gameState.nextPieces[0].matrix.map((row, y) => (
+                    <div key={y} className="preview-row">
+                      {row.map((cell, x) => 
+                        cell ? (
+                          <div
+                            key={x}
+                            className="preview-cell"
+                            style={{
+                              backgroundColor: gameState.nextPieces[0].color,
+                            }}
+                          />
+                        ) : (
+                          <div key={x} className="preview-cell-empty" />
+                        )
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
-          )}
+          </div>
           
-          {gameState.heldPiece && (
-            <div className="hold-piece-container">
-              <h3>Hold</h3>
-              <div className="hold-piece-preview">
-                {gameState.heldPiece.matrix.map((row, y) => (
-                  <div key={y} className="preview-row">
-                    {row.map((cell, x) => 
-                      cell ? (
-                        <div
-                          key={x}
-                          className="preview-cell"
-                          style={{
-                            backgroundColor: gameState.heldPiece!.color,
-                          }}
-                        />
-                      ) : (
-                        <div key={x} className="preview-cell-empty" />
-                      )
-                    )}
-                  </div>
-                ))}
-              </div>
+          <div className="hold-piece-container">
+            <h3>Hold</h3>
+            <div className="preview-box">
+              {gameState.heldPiece && (
+                <div className="preview-content">
+                  {gameState.heldPiece.matrix.map((row, y) => (
+                    <div key={y} className="preview-row">
+                      {row.map((cell, x) => 
+                        cell ? (
+                          <div
+                            key={x}
+                            className="preview-cell"
+                            style={{
+                              backgroundColor: gameState.heldPiece!.color,
+                            }}
+                          />
+                        ) : (
+                          <div key={x} className="preview-cell-empty" />
+                        )
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
-          )}
+          </div>
         </div>
       
         <GameOverlay

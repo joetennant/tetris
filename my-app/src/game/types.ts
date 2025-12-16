@@ -41,7 +41,11 @@ export const Input = {
   RESTART: 'restart',
   DEBUG_TOGGLE: 'debugToggle',
   DEBUG_LEVEL_UP: 'debugLevelUp',
-  DEBUG_LEVEL_DOWN: 'debugLevelDown'
+  DEBUG_LEVEL_DOWN: 'debugLevelDown',
+  DEBUG_SCORE_UP_SMALL: 'debugScoreUpSmall',     // +1000
+  DEBUG_SCORE_DOWN_SMALL: 'debugScoreDownSmall', // -1000
+  DEBUG_SCORE_UP_LARGE: 'debugScoreUpLarge',     // +10000
+  DEBUG_SCORE_DOWN_LARGE: 'debugScoreDownLarge', // -10000
 } as const;
 
 export type Input = typeof Input[keyof typeof Input];
@@ -173,6 +177,8 @@ export interface GameState {
   lastDropTime: number;      // timestamp of last automatic drop
   lastLockMoveTime: number;  // timestamp of last move that reset lock
   debugMode: boolean;        // debug mode enabled
+  clearingLines: number[];   // rows currently being cleared (for animation)
+  lockingPiece: boolean;     // piece is about to lock (for animation)
 }
 
 // ============================================================================

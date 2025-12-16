@@ -241,17 +241,17 @@ All paths relative to `my-app/` directory:
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T113 [P] Add keyboard control reference overlay (show controls on screen)
-- [ ] T114 [P] Add smooth line clear animation in Playfield.tsx
-- [ ] T115 [P] Add piece lock animation (flash before locking)
-- [ ] T116 [P] Optimize rendering: use React.memo for pure components
-- [ ] T117 [P] Add responsive design CSS for different screen sizes
-- [ ] T118 [P] Add proper TypeScript strict mode and resolve any type issues
-- [ ] T119 Test game at high speeds (level 10+) and verify 60 FPS maintained
-- [ ] T120 Run full test suite: `npm test` and ensure all tests pass
-- [ ] T121 Generate test coverage report: `npm run test:coverage` and review
-- [ ] T122 [P] Update README.md with game controls and build instructions
-- [ ] T123 [P] Add inline code comments for complex algorithms (SRS wall kicks, 7-bag)
+- [X] T113 [P] Add keyboard control reference overlay (show controls on screen)
+- [X] T114 [P] Add smooth line clear animation in Playfield.tsx
+- [X] T115 [P] Add piece lock animation (flash before locking)
+- [X] T116 [P] Optimize rendering: use React.memo for pure components
+- [X] T117 [P] Add responsive design CSS for different screen sizes
+- [X] T118 [P] Add proper TypeScript strict mode and resolve any type issues
+- [X] T119 Test game at high speeds (level 10+) and verify 60 FPS maintained
+- [X] T120 Run full test suite: `npm test` and ensure all tests pass
+- [X] T121 Generate test coverage report: `npm run test:coverage` and review
+- [X] T122 [P] Update README.md with game controls and build instructions
+- [X] T123 [P] Add inline code comments for complex algorithms (SRS wall kicks, 7-bag)
 - [ ] T124 Validate against quickstart.md implementation steps
 - [ ] T125 Final playtest: verify all acceptance scenarios from spec.md
 

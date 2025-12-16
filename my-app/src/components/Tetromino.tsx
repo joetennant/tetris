@@ -9,9 +9,10 @@ import type { Tetromino as TetrominoType } from '../game/types';
 interface TetrominoProps {
   tetromino: TetrominoType;
   isGhost?: boolean;
+  isLocking?: boolean;
 }
 
-export function Tetromino({ tetromino, isGhost = false }: TetrominoProps) {
+export function Tetromino({ tetromino, isGhost = false, isLocking = false }: TetrominoProps) {
   const { matrix, position, color } = tetromino;
 
   return (
@@ -35,7 +36,7 @@ export function Tetromino({ tetromino, isGhost = false }: TetrominoProps) {
           return (
             <div
               key={`${y}-${x}`}
-              className={`tetromino-block ${isGhost ? 'ghost' : ''}`}
+              className={`tetromino-block ${isGhost ? 'ghost' : ''} ${isLocking ? 'locking' : ''}`}
               style={{
                 gridRow: displayRow,
                 gridColumn: gridCol + 1,

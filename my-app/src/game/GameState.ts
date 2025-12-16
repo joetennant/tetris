@@ -54,6 +54,8 @@ export class GameStateManager {
       lastDropTime: 0,
       lastLockMoveTime: 0,
       debugMode: false,
+      clearingLines: [],
+      lockingPiece: false,
     };
   }
 
@@ -172,6 +174,12 @@ export class GameStateManager {
 
     this.state.lastLockMoveTime += deltaTime;
 
+    // Show lock animation in the last 200ms before locking
+    if (this.state.lastLockMoveTime >= this.state.lockDelay - 200 && 
+        this.state.lastLockMoveTime < this.state.lockDelay) {
+      this.state.lockingPiece = true;
+    }
+
     if (this.state.lastLockMoveTime >= this.state.lockDelay) {
       this.lockCurrentPiece();
     }
@@ -208,12 +216,19 @@ export class GameStateManager {
       return;
     }
 
+    // Reset locking animation
+    this.state.lockingPiece = false;
+
     // Lock piece into playfield
     this.playfield.lockPiece(this.state.currentPiece);
 
     // Check for completed lines
     const completedLines = this.playfield.detectCompletedLines();
     if (completedLines.length > 0) {
+      // Set clearing animation state (CSS will handle the animation)
+      this.state.clearingLines = completedLines;
+      
+      // Clear lines immediately (animation is visual only)
       this.playfield.clearLines(completedLines);
       
       // Award score
@@ -226,6 +241,11 @@ export class GameStateManager {
         this.state.level = this.scoreManager.getLevel(this.state.linesCleared);
         this.state.fallSpeed = this.scoreManager.calculateFallSpeed(this.state.level);
       }
+      
+      // Clear animation state after a brief delay
+      setTimeout(() => {
+        this.state.clearingLines = [];
+      }, 300);
     }
 
     // Spawn next piece
@@ -253,6 +273,22 @@ export class GameStateManager {
       if (input === Input.DEBUG_LEVEL_DOWN) {
         this.state.level = Math.max(this.state.level - 1, 1);
         this.state.fallSpeed = this.scoreManager.calculateFallSpeed(this.state.level);
+        return;
+      }
+      if (input === Input.DEBUG_SCORE_UP_SMALL) {
+        this.state.score = Math.max(0, this.state.score + 1000);
+        return;
+      }
+      if (input === Input.DEBUG_SCORE_DOWN_SMALL) {
+        this.state.score = Math.max(0, this.state.score - 1000);
+        return;
+      }
+      if (input === Input.DEBUG_SCORE_UP_LARGE) {
+        this.state.score = Math.max(0, this.state.score + 10000);
+        return;
+      }
+      if (input === Input.DEBUG_SCORE_DOWN_LARGE) {
+        this.state.score = Math.max(0, this.state.score - 10000);
         return;
       }
     }
