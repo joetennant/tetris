@@ -105,6 +105,7 @@ export class GameStateManager {
 
     // Check game over at spawn position
     if (!this.playfield.isValidPosition(this.state.currentPiece, this.state.currentPiece.position)) {
+      this.state.currentPiece = null; // Clear current piece to prevent rendering issues
       this.state.gameStatus = GameStatus.GAME_OVER;
       return;
     }
@@ -198,6 +199,7 @@ export class GameStateManager {
     // If even the lowest block is above row 20, entire piece is in buffer zone
     if (lowestBlockRow !== -1 && lowestBlockRow < 20) {
       this.playfield.lockPiece(this.state.currentPiece);
+      this.state.currentPiece = null; // Clear current piece to prevent rendering issues
       this.state.gameStatus = GameStatus.GAME_OVER;
       return;
     }
@@ -352,6 +354,24 @@ export class GameStateManager {
       const temp = this.state.currentPiece.type;
       this.state.currentPiece = createTetromino(this.state.heldPiece.type);
       this.state.heldPiece = createTetromino(temp);
+      
+      // Reset lock delay counters for swapped piece
+      this.state.lockResets = 0;
+      this.state.lastLockMoveTime = 0;
+      
+      // Check if swapped piece can spawn at spawn position
+      if (!this.playfield.isValidPosition(this.state.currentPiece, this.state.currentPiece.position)) {
+        // Game over if piece can't spawn
+        this.state.currentPiece = null; // Clear current piece to prevent rendering issues
+        this.state.gameStatus = GameStatus.GAME_OVER;
+        return;
+      }
+      
+      // Tetris Guideline: Piece must move down immediately after appearing
+      const movedDown = this.controller.move(this.state.currentPiece, 0, 1);
+      if (movedDown) {
+        this.state.currentPiece = movedDown;
+      }
     }
 
     this.state.canHold = false;

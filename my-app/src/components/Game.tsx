@@ -81,8 +81,8 @@ export function Game() {
         <div className="game-main">
           <Playfield
             grid={gameState.playfield.getGrid()}
-            currentPiece={gameState.currentPiece}
-            ghostPiece={ghostPiece}
+            currentPiece={gameState.gameStatus === GameStatus.PLAYING ? gameState.currentPiece : null}
+            ghostPiece={gameState.gameStatus === GameStatus.PLAYING ? ghostPiece : null}
           />
         </div>
         
