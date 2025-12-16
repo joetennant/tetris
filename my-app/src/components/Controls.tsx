@@ -42,6 +42,14 @@ export function Controls() {
           <span>Hold</span>
         </div>
         <div className="control-item">
+          <kbd>G</kbd>
+          <span>Toggle Ghost</span>
+        </div>
+        <div className="control-item">
+          <kbd>M</kbd>
+          <span>Toggle Music/Sound</span>
+        </div>
+        <div className="control-item">
           <kbd>P</kbd> <span>or</span> <kbd>Esc</kbd>
           <span>Pause</span>
         </div>

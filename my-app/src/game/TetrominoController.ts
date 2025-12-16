@@ -7,6 +7,7 @@
 
 import type { Tetromino, RotationDirection, Position, IPlayfield } from './types';
 import { SRS_WALL_KICKS, TETROMINO_SHAPES } from './constants';
+import { soundManager } from './SoundManager';
 // import { cloneTetromino } from './tetrominoes';
 
 export class TetrominoController {
@@ -110,6 +111,7 @@ export class TetrominoController {
         )
       ) {
         // Success! This kick works
+        soundManager.playRotate();
         return {
           ...tetromino,
           rotation: newRotation,
@@ -158,9 +160,10 @@ export class TetrominoController {
    * 5. Return final position and distance dropped
    * 
    * @param tetromino - The piece to drop
+   * @param playSound - Whether to play the hard drop sound (default: false)
    * @returns Object with final tetromino position and distance dropped
    */
-  hardDrop(tetromino: Tetromino): { tetromino: Tetromino; distance: number } {
+  hardDrop(tetromino: Tetromino, playSound: boolean = false): { tetromino: Tetromino; distance: number } {
     let dropDistance = 0;
     let currentPos = { ...tetromino.position };
 
@@ -173,6 +176,10 @@ export class TetrominoController {
     ) {
       currentPos.row++;
       dropDistance++;
+    }
+
+    if (dropDistance > 0 && playSound) {
+      soundManager.playHardDrop();
     }
 
     return {

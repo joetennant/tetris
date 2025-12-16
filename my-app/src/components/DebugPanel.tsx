@@ -51,6 +51,9 @@ export const DebugPanel = memo(function DebugPanel({ gameState }: DebugPanelProp
           <div className="debug-control-hint">
             <kbd>{'}'}</kbd> Score +10000 | <kbd>{'{'}</kbd> Score -10000
           </div>
+          <div className="debug-control-hint">
+            <kbd>1</kbd>/<kbd>2</kbd>/<kbd>3</kbd>/<kbd>4</kbd> Setup line clear test
+          </div>
         </div>
       </div>
     </div>

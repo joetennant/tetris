@@ -39,6 +39,8 @@ export const Input = {
   HOLD: 'hold',
   PAUSE: 'pause',
   RESTART: 'restart',
+  TOGGLE_GHOST: 'toggleGhost',
+  TOGGLE_SOUND: 'toggleSound',
   DEBUG_TOGGLE: 'debugToggle',
   DEBUG_LEVEL_UP: 'debugLevelUp',
   DEBUG_LEVEL_DOWN: 'debugLevelDown',
@@ -46,6 +48,10 @@ export const Input = {
   DEBUG_SCORE_DOWN_SMALL: 'debugScoreDownSmall', // -1000
   DEBUG_SCORE_UP_LARGE: 'debugScoreUpLarge',     // +10000
   DEBUG_SCORE_DOWN_LARGE: 'debugScoreDownLarge', // -10000
+  DEBUG_CLEAR_1_LINE: 'debugClear1Line',         // Fill bottom row except 1 column
+  DEBUG_CLEAR_2_LINES: 'debugClear2Lines',       // Fill bottom 2 rows except 1 column
+  DEBUG_CLEAR_3_LINES: 'debugClear3Lines',       // Fill bottom 3 rows except 1 column
+  DEBUG_CLEAR_4_LINES: 'debugClear4Lines',       // Fill bottom 4 rows except 1 column
 } as const;
 
 export type Input = typeof Input[keyof typeof Input];
@@ -178,7 +184,10 @@ export interface GameState {
   lastLockMoveTime: number;  // timestamp of last move that reset lock
   debugMode: boolean;        // debug mode enabled
   clearingLines: number[];   // rows currently being cleared (for animation)
+  clearingLineCount: number; // number of lines being cleared (1-4, for animation variant)
   lockingPiece: boolean;     // piece is about to lock (for animation)
+  ghostPieceVisible: boolean; // whether to show ghost piece
+  droppingRows: Map<number, number>; // Maps old row index to new row index for drop animation
 }
 
 // ============================================================================
@@ -272,7 +281,7 @@ export interface IPlayfield {
 export interface ITetrominoController {
   rotate(tetromino: Tetromino, direction: RotationDirection): Tetromino | null;
   move(tetromino: Tetromino, dx: number, dy: number): Tetromino | null;
-  hardDrop(tetromino: Tetromino): { tetromino: Tetromino; distance: number };
+  hardDrop(tetromino: Tetromino, playSound?: boolean): { tetromino: Tetromino; distance: number };
   calculateGhostPosition(tetromino: Tetromino): Position;
 }
 

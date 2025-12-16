@@ -54,6 +54,14 @@ export function Game() {
     onKey('P', () => handleInput(Input.PAUSE));
     onKey('Escape', () => handleInput(Input.PAUSE));
     
+    // Ghost piece toggle
+    onKey('g', () => handleInput(Input.TOGGLE_GHOST));
+    onKey('G', () => handleInput(Input.TOGGLE_GHOST));
+    
+    // Sound toggle
+    onKey('m', () => handleInput(Input.TOGGLE_SOUND));
+    onKey('M', () => handleInput(Input.TOGGLE_SOUND));
+    
     // Debug controls
     onKey('d', () => handleInput(Input.DEBUG_TOGGLE));
     onKey('D', () => handleInput(Input.DEBUG_TOGGLE));
@@ -65,6 +73,10 @@ export function Game() {
     onKey('[', () => handleInput(Input.DEBUG_SCORE_DOWN_SMALL)); // -1000
     onKey('}', () => handleInput(Input.DEBUG_SCORE_UP_LARGE));   // +10000
     onKey('{', () => handleInput(Input.DEBUG_SCORE_DOWN_LARGE)); // -10000
+    onKey('1', () => handleInput(Input.DEBUG_CLEAR_1_LINE));     // Setup 1 line clear
+    onKey('2', () => handleInput(Input.DEBUG_CLEAR_2_LINES));    // Setup 2 line clear
+    onKey('3', () => handleInput(Input.DEBUG_CLEAR_3_LINES));    // Setup 3 line clear
+    onKey('4', () => handleInput(Input.DEBUG_CLEAR_4_LINES));    // Setup 4 line clear (Tetris)
   }, [handleInput, onKey]);
 
   // Game loop
@@ -96,8 +108,10 @@ export function Game() {
           <Playfield
             grid={gameState.playfield.getGrid()}
             currentPiece={gameState.gameStatus === GameStatus.PLAYING ? gameState.currentPiece : null}
-            ghostPiece={gameState.gameStatus === GameStatus.PLAYING ? ghostPiece : null}
+            ghostPiece={gameState.gameStatus === GameStatus.PLAYING && gameState.ghostPieceVisible ? ghostPiece : null}
             clearingLines={gameState.clearingLines}
+            clearingLineCount={gameState.clearingLineCount}
+            droppingRows={gameState.droppingRows}
             lockingPiece={gameState.lockingPiece}
           />
         </div>

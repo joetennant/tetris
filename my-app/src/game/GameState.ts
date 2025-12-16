@@ -13,6 +13,7 @@ import { SevenBagRandomizer } from './Randomizer';
 import { ScoreManager } from './ScoreManager';
 import { createTetromino } from './tetrominoes';
 import { GAME_CONFIG } from './constants';
+import { soundManager } from './SoundManager';
 
 export class GameStateManager {
   private state: GameState;
@@ -55,7 +56,10 @@ export class GameStateManager {
       lastLockMoveTime: 0,
       debugMode: false,
       clearingLines: [],
+      clearingLineCount: 0,
       lockingPiece: false,
+      ghostPieceVisible: true,
+      droppingRows: new Map(),
     };
   }
 
@@ -75,6 +79,7 @@ export class GameStateManager {
     this.state = this.createInitialState();
     this.spawnPiece();
     this.state.gameStatus = GameStatus.PLAYING;
+    soundManager.startMusic(this.state.fallSpeed);
   }
 
   /**
@@ -83,6 +88,7 @@ export class GameStateManager {
   pause(): void {
     if (this.state.gameStatus === GameStatus.PLAYING) {
       this.state.gameStatus = GameStatus.PAUSED;
+      soundManager.stopMusic();
     }
   }
 
@@ -92,6 +98,7 @@ export class GameStateManager {
   resume(): void {
     if (this.state.gameStatus === GameStatus.PAUSED) {
       this.state.gameStatus = GameStatus.PLAYING;
+      soundManager.startMusic(this.state.fallSpeed);
     }
   }
 
@@ -113,6 +120,8 @@ export class GameStateManager {
     if (!this.playfield.isValidPosition(this.state.currentPiece, this.state.currentPiece.position)) {
       this.state.currentPiece = null; // Clear current piece to prevent rendering issues
       this.state.gameStatus = GameStatus.GAME_OVER;
+      soundManager.stopMusic();
+      soundManager.playGameOver();
       return;
     }
 
@@ -213,6 +222,8 @@ export class GameStateManager {
       this.playfield.lockPiece(this.state.currentPiece);
       this.state.currentPiece = null; // Clear current piece to prevent rendering issues
       this.state.gameStatus = GameStatus.GAME_OVER;
+      soundManager.stopMusic();
+      soundManager.playGameOver();
       return;
     }
 
@@ -221,31 +232,78 @@ export class GameStateManager {
 
     // Lock piece into playfield
     this.playfield.lockPiece(this.state.currentPiece);
+    soundManager.playLand();
 
     // Check for completed lines
     const completedLines = this.playfield.detectCompletedLines();
     if (completedLines.length > 0) {
-      // Set clearing animation state (CSS will handle the animation)
+      // Mark lines as clearing for animation
       this.state.clearingLines = completedLines;
+      this.state.clearingLineCount = completedLines.length;
       
-      // Clear lines immediately (animation is visual only)
-      this.playfield.clearLines(completedLines);
+      // Play appropriate line clear sound
+      if (completedLines.length === 4) {
+        soundManager.playTetris();
+      } else if (completedLines.length === 3) {
+        soundManager.playTripleLineClear();
+      } else if (completedLines.length === 2) {
+        soundManager.playDoubleLineClear();
+      } else {
+        soundManager.playLineClear();
+      }
       
-      // Award score
+      // Award score immediately
       const lineScore = this.scoreManager.calculateLineScore(completedLines.length, this.state.level);
       this.state.score += lineScore;
+      const previousLevel = this.state.level;
       this.state.linesCleared += completedLines.length;
 
       // Check for level up
       if (this.scoreManager.shouldLevelUp(this.state.linesCleared, this.state.level)) {
         this.state.level = this.scoreManager.getLevel(this.state.linesCleared);
         this.state.fallSpeed = this.scoreManager.calculateFallSpeed(this.state.level);
+        soundManager.updateMusicTempo(this.state.fallSpeed);
+        if (this.state.level > previousLevel) {
+          soundManager.playLevelUp();
+        }
       }
+
+      // Determine animation duration based on line count
+      const clearDuration = completedLines.length === 4 ? 800 : 
+                           completedLines.length === 3 ? 500 :
+                           completedLines.length === 2 ? 450 : 400;
       
-      // Clear animation state after a brief delay
+      const dropDuration = 200; // Time for lines to drop down
+
+      // After clear animation, actually clear the lines and start drop animation
       setTimeout(() => {
+        // Calculate which rows will drop and by how much
+        const droppingRows = new Map<number, number>();
+        const sortedClearedLines = [...completedLines].sort((a, b) => a - b);
+        
+        // For each row above the cleared lines, calculate its new position
+        for (let row = 0; row < 40; row++) {
+          if (!sortedClearedLines.includes(row)) {
+            // Count how many cleared lines are below this row
+            const dropAmount = sortedClearedLines.filter(clearedRow => clearedRow > row).length;
+            if (dropAmount > 0) {
+              droppingRows.set(row, row + dropAmount);
+            }
+          }
+        }
+        
+        this.state.droppingRows = droppingRows;
         this.state.clearingLines = [];
-      }, 300);
+        this.state.clearingLineCount = 0;
+        
+        // Clear lines from playfield
+        this.playfield.clearLines(completedLines);
+        
+        // After drop animation, reset dropping state
+        setTimeout(() => {
+          this.state.droppingRows = new Map();
+        }, dropDuration);
+      }, clearDuration);
     }
 
     // Spawn next piece
@@ -258,9 +316,14 @@ export class GameStateManager {
    * Handle player input
    */
   handleInput(input: InputType): void {
-    // Handle debug commands anytime
+    // Handle toggle commands anytime
     if (input === Input.DEBUG_TOGGLE) {
       this.state.debugMode = !this.state.debugMode;
+      return;
+    }
+
+    if (input === Input.TOGGLE_GHOST) {
+      this.state.ghostPieceVisible = !this.state.ghostPieceVisible;
       return;
     }
 
@@ -268,11 +331,13 @@ export class GameStateManager {
       if (input === Input.DEBUG_LEVEL_UP) {
         this.state.level = Math.min(this.state.level + 1, 99);
         this.state.fallSpeed = this.scoreManager.calculateFallSpeed(this.state.level);
+        soundManager.updateMusicTempo(this.state.fallSpeed);
         return;
       }
       if (input === Input.DEBUG_LEVEL_DOWN) {
         this.state.level = Math.max(this.state.level - 1, 1);
         this.state.fallSpeed = this.scoreManager.calculateFallSpeed(this.state.level);
+        soundManager.updateMusicTempo(this.state.fallSpeed);
         return;
       }
       if (input === Input.DEBUG_SCORE_UP_SMALL) {
@@ -291,6 +356,22 @@ export class GameStateManager {
         this.state.score = Math.max(0, this.state.score - 10000);
         return;
       }
+      if (input === Input.DEBUG_CLEAR_1_LINE) {
+        this.setupLineClearTest(1);
+        return;
+      }
+      if (input === Input.DEBUG_CLEAR_2_LINES) {
+        this.setupLineClearTest(2);
+        return;
+      }
+      if (input === Input.DEBUG_CLEAR_3_LINES) {
+        this.setupLineClearTest(3);
+        return;
+      }
+      if (input === Input.DEBUG_CLEAR_4_LINES) {
+        this.setupLineClearTest(4);
+        return;
+      }
     }
 
     if (this.state.gameStatus !== GameStatus.PLAYING || !this.state.currentPiece) {
@@ -300,6 +381,17 @@ export class GameStateManager {
           this.pause();
         } else if (this.state.gameStatus === GameStatus.PAUSED) {
           this.resume();
+        }
+      }
+      // Handle sound toggle in any state
+      if (input === Input.TOGGLE_SOUND) {
+        const newEnabled = !soundManager.isEnabled();
+        soundManager.setEnabled(newEnabled);
+        soundManager.setMusicEnabled(newEnabled);
+        if (!newEnabled) {
+          soundManager.stopMusic();
+        } else if (this.state.gameStatus === GameStatus.PLAYING) {
+          soundManager.startMusic(this.state.fallSpeed);
         }
       }
       return;
@@ -313,6 +405,7 @@ export class GameStateManager {
         if (movedLeft) {
           this.state.currentPiece = movedLeft;
           moved = true;
+          soundManager.playMove();
         }
         break;
 
@@ -321,6 +414,7 @@ export class GameStateManager {
         if (movedRight) {
           this.state.currentPiece = movedRight;
           moved = true;
+          soundManager.playMove();
         }
         break;
 
@@ -349,7 +443,7 @@ export class GameStateManager {
         break;
 
       case Input.HARD_DROP:
-        const result = this.controller.hardDrop(this.state.currentPiece);
+        const result = this.controller.hardDrop(this.state.currentPiece, true);
         this.state.currentPiece = result.tetromino;
         this.state.score += this.scoreManager.calculateDropScore(result.distance, true);
         this.lockCurrentPiece();
@@ -365,6 +459,10 @@ export class GameStateManager {
 
       case Input.RESTART:
         this.start();
+        break;
+
+      case Input.TOGGLE_SOUND:
+        soundManager.setEnabled(!soundManager.isEnabled());
         break;
     }
 
@@ -382,6 +480,8 @@ export class GameStateManager {
    */
   private handleHold(): void {
     if (!this.state.canHold || !this.state.currentPiece) return;
+
+    soundManager.playHold();
 
     if (this.state.heldPiece === null) {
       // Store current piece and spawn next
@@ -402,6 +502,7 @@ export class GameStateManager {
         // Game over if piece can't spawn
         this.state.currentPiece = null; // Clear current piece to prevent rendering issues
         this.state.gameStatus = GameStatus.GAME_OVER;
+        soundManager.playGameOver();
         return;
       }
       
@@ -413,5 +514,35 @@ export class GameStateManager {
     }
 
     this.state.canHold = false;
+  }
+
+  /**
+   * Setup playfield for testing line clears (debug mode)
+   */
+  private setupLineClearTest(lineCount: 1 | 2 | 3 | 4): void {
+    if (!this.state.debugMode) return;
+
+    // Reset playfield
+    this.playfield.reset();
+
+    // Fill bottom N rows, leaving one column empty
+    const grid = this.playfield.getGrid();
+    const emptyColumn = 4; // Leave middle column empty for dropping piece
+    
+    for (let line = 0; line < lineCount; line++) {
+      const row = 39 - line; // Bottom row is 39
+      for (let col = 0; col < 10; col++) {
+        if (col !== emptyColumn) {
+          grid[row][col] = { filled: true, color: '#666666' };
+        }
+      }
+    }
+
+    // Spawn I piece above the empty column for easy testing
+    if (this.state.currentPiece) {
+      const iPiece = createTetromino('I');
+      iPiece.position.col = emptyColumn - 1; // Center I piece over gap
+      this.state.currentPiece = iPiece;
+    }
   }
 }
