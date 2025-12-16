@@ -23,19 +23,18 @@ export function Tetromino({ tetromino, isGhost = false }: TetrominoProps) {
           const gridRow = position.row + y;
           const gridCol = position.col + x;
 
-          // Only render if in visible area (rows 20-39)
-          if (gridRow < 20 || gridRow >= 40) return null;
+          // Render if in visible area (rows 20-39) or just above (row 19 for spawn visibility)
+          if (gridRow < 19 || gridRow >= 40) return null;
 
           return (
             <div
               key={`${y}-${x}`}
               className={`tetromino-block ${isGhost ? 'ghost' : ''}`}
               style={{
-                gridRow: gridRow - 19, // Adjust for visible area (row 20 = grid row 1)
+                gridRow: gridRow - 19,
                 gridColumn: gridCol + 1,
                 backgroundColor: isGhost ? 'transparent' : color,
-                border: isGhost ? `2px solid ${color}` : `1px solid rgba(0,0,0,0.3)`,
-                opacity: isGhost ? 0.3 : 1,
+                borderColor: isGhost ? color : undefined,
               }}
             />
           );

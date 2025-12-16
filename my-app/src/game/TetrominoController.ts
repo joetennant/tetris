@@ -5,15 +5,14 @@
  * wall kicks, and hard drop functionality.
  */
 
-import type { Tetromino, RotationDirection, Position } from './types';
-import { Playfield } from './Playfield';
+import type { Tetromino, RotationDirection, Position, IPlayfield } from './types';
 import { SRS_WALL_KICKS, TETROMINO_SHAPES } from './constants';
 // import { cloneTetromino } from './tetrominoes';
 
 export class TetrominoController {
-  private playfield: Playfield;
+  private playfield: IPlayfield;
   
-  constructor(playfield: Playfield) {
+  constructor(playfield: IPlayfield) {
     this.playfield = playfield;
   }
 

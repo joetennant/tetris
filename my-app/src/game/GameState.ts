@@ -103,9 +103,16 @@ export class GameStateManager {
     this.state.lockResets = 0;
     this.state.lastLockMoveTime = 0;
 
-    // Check game over
+    // Check game over at spawn position
     if (!this.playfield.isValidPosition(this.state.currentPiece, this.state.currentPiece.position)) {
       this.state.gameStatus = GameStatus.GAME_OVER;
+      return;
+    }
+
+    // Tetris Guideline: Piece must "move down immediately after appearing"
+    const movedDown = this.controller.move(this.state.currentPiece, 0, 1);
+    if (movedDown) {
+      this.state.currentPiece = movedDown;
     }
   }
 
@@ -170,6 +177,30 @@ export class GameStateManager {
    */
   lockCurrentPiece(): void {
     if (!this.state.currentPiece) return;
+
+    // Tetris Guideline: Check if piece locks completely above visible area (row 20)
+    // Game over if ALL blocks of piece are in buffer zone (rows 0-19)
+    const piece = this.state.currentPiece;
+    let lowestBlockRow = -1; // Lowest block = highest row number
+    
+    for (let r = 0; r < piece.matrix.length; r++) {
+      for (let c = 0; c < piece.matrix[r].length; c++) {
+        if (piece.matrix[r][c]) {
+          const actualRow = piece.position.row + r;
+          // Track the lowest block (highest row number)
+          if (lowestBlockRow === -1 || actualRow > lowestBlockRow) {
+            lowestBlockRow = actualRow;
+          }
+        }
+      }
+    }
+
+    // If even the lowest block is above row 20, entire piece is in buffer zone
+    if (lowestBlockRow !== -1 && lowestBlockRow < 20) {
+      this.playfield.lockPiece(this.state.currentPiece);
+      this.state.gameStatus = GameStatus.GAME_OVER;
+      return;
+    }
 
     // Lock piece into playfield
     this.playfield.lockPiece(this.state.currentPiece);

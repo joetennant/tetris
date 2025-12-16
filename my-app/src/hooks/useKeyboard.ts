@@ -13,7 +13,8 @@ export function useKeyboard() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Prevent default for game keys
-      const gameKeys = ['ArrowLeft', 'ArrowRight', 'ArrowDown', 'ArrowUp', ' ', 'z', 'x', 'c', 'p'];
+      const gameKeys = ['ArrowLeft', 'ArrowRight', 'ArrowDown', 'ArrowUp', ' ', 
+                        'z', 'Z', 'x', 'X', 'c', 'C', 'p', 'P', 'Control', 'Shift', 'Escape'];
       if (gameKeys.includes(e.key)) {
         e.preventDefault();
       }

@@ -49,13 +49,13 @@ export function GameOverlay({ gameStatus, score, onStart, onResume }: GameOverla
         <h1>Tetris</h1>
         <div className="controls-info">
           <p><strong>Controls:</strong></p>
-          <p>← → : Move</p>
+          <p>← → : Move Left/Right</p>
           <p>↓ : Soft Drop</p>
-          <p>↑ / Space : Hard Drop</p>
-          <p>Z : Rotate CCW</p>
-          <p>X / ↑ : Rotate CW</p>
-          <p>C : Hold</p>
-          <p>P : Pause</p>
+          <p>Space : Hard Drop</p>
+          <p>↑ (or X) : Rotate Clockwise</p>
+          <p>Z (or Ctrl) : Rotate Counter-Clockwise</p>
+          <p>C (or Shift) : Hold Piece</p>
+          <p>P (or Esc) : Pause</p>
         </div>
         <button onClick={onStart}>Start Game</button>
       </div>

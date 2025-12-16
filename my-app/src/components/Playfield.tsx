@@ -23,12 +23,11 @@ export function Playfield({ grid, currentPiece, ghostPiece }: PlayfieldProps) {
         row.map((cell, x) => (
           <div
             key={`${y}-${x}`}
-            className="cell"
+            className={cell.isEmpty ? 'cell' : 'cell locked-block'}
             style={{
               gridRow: y + 1,
               gridColumn: x + 1,
-              backgroundColor: cell.isEmpty ? '#222' : cell.color || '#666',
-              border: '1px solid rgba(255,255,255,0.1)',
+              backgroundColor: cell.isEmpty ? 'transparent' : (cell.color || '#666'),
             }}
           />
         ))

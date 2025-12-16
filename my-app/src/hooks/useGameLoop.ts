@@ -6,10 +6,10 @@
 
 import { useEffect, useRef } from 'react';
 
-export type GameLoopCallback = (deltaTime: number, elapsedTime: number) => void;
+export type GameLoopCallback = (deltaTime: number, elapsedTime?: number) => void;
 
 export function useGameLoop(callback: GameLoopCallback, isActive = true) {
-  const animationId = useRef<number>();
+  const animationId = useRef<number | undefined>(undefined);
   const lastTime = useRef<number>(performance.now());
   const startTime = useRef<number>(performance.now());
   const callbackRef = useRef<GameLoopCallback>(callback);

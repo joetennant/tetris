@@ -36,13 +36,13 @@ export const GAME_CONFIG: GameConfig = {
 // ============================================================================
 
 export const TETROMINO_COLORS: Record<TetrominoType, string> = {
-  I: '#00F0F0', // Cyan
-  J: '#0000F0', // Blue
-  L: '#F0A000', // Orange
-  O: '#F0F000', // Yellow
-  S: '#00F000', // Green
-  T: '#A000F0', // Purple
-  Z: '#F00000', // Red
+  I: '#00e5ff', // Bright cyan (vibrant)
+  J: '#4169ff', // Bright blue (vibrant)
+  L: '#ff8c00', // Bright orange (vibrant)
+  O: '#ffd700', // Bright yellow (vibrant)
+  S: '#00ff88', // Bright green (vibrant)
+  T: '#d946ff', // Bright purple (vibrant)
+  Z: '#ff4757', // Bright red (vibrant)
 };
 
 // ============================================================================
@@ -299,13 +299,14 @@ export const TETROMINO_SHAPES = {
  * col: centered in 10-column playfield
  */
 export const SPAWN_POSITIONS: Record<TetrominoType, { row: number; col: number }> = {
-  I: { row: 0, col: 3 },
-  J: { row: 0, col: 3 },
-  L: { row: 0, col: 3 },
-  O: { row: 0, col: 4 },
-  S: { row: 0, col: 3 },
-  T: { row: 0, col: 3 },
-  Z: { row: 0, col: 3 },
+  // Spawn at row 19-20 (top of visible area) so pieces are visible when they appear
+  I: { row: 19, col: 3 },
+  J: { row: 19, col: 3 },
+  L: { row: 19, col: 3 },
+  O: { row: 19, col: 4 },
+  S: { row: 19, col: 3 },
+  T: { row: 19, col: 3 },
+  Z: { row: 19, col: 3 },
 };
 
 // ============================================================================
