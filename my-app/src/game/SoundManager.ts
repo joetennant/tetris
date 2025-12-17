@@ -16,7 +16,8 @@ export class SoundManager {
 
   private initAudio(): void {
     try {
-      this.audioContext = new (window.AudioContext || (window as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
+      const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      this.audioContext = new AudioContextClass();
       this.masterVolume = this.audioContext.createGain();
       this.masterVolume.gain.value = 0.3;
       this.masterVolume.connect(this.audioContext.destination);

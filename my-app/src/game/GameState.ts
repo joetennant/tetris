@@ -473,25 +473,26 @@ export class GameStateManager {
         break;
       }
 
-      case Input.HOLD:
+      case Input.HOLD: {
         this.handleHold();
         break;
+      }
 
-      case Input.PAUSE:
+      case Input.PAUSE: {
         this.pause();
         break;
+      }
 
-      case Input.RESTART:
+      case Input.RESTART: {
         this.start();
         break;
+      }
 
-      case Input.NEW_GAME:
+      case Input.NEW_GAME: {
         this.start();
         break;
+      }
 
-      case Input.TOGGLE_SOUND:
-        soundManager.setEnabled(!soundManager.isEnabled());
-        break;
     }
 
     // Reset lock delay if piece moved/rotated
@@ -561,7 +562,7 @@ export class GameStateManager {
       const row = 39 - line; // Bottom row is 39
       for (let col = 0; col < 10; col++) {
         if (col !== emptyColumn) {
-          grid[row][col] = { filled: true, color: '#666666' };
+          grid[row][col] = { isEmpty: false, color: '#666666' };
         }
       }
     }
