@@ -165,7 +165,7 @@ export class TetrominoController {
    */
   hardDrop(tetromino: Tetromino, playSound: boolean = false): { tetromino: Tetromino; distance: number } {
     let dropDistance = 0;
-    let currentPos = { ...tetromino.position };
+    const currentPos = { ...tetromino.position };
 
     // Drop until collision
     while (

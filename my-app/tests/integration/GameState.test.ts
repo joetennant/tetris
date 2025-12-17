@@ -31,9 +31,6 @@ describe('GameState Integration Tests', () => {
     expect(state.currentPiece?.position.col).toBeGreaterThanOrEqual(3);
     expect(state.currentPiece?.position.col).toBeLessThanOrEqual(5);
 
-    // Store initial piece type
-    const initialPieceType = state.currentPiece!.type;
-
     // Move piece left
     gameManager.handleInput(Input.MOVE_LEFT);
     state = gameManager.getState();
@@ -66,8 +63,7 @@ describe('GameState Integration Tests', () => {
     // Should spawn next piece
     expect(state.currentPiece).not.toBeNull();
     
-    // Next piece should be different (or at different position)
-    const newPieceType = state.currentPiece!.type;
+    // Next piece should be at top
     const newPieceAtTop = state.currentPiece!.position.row <= 22;
     expect(newPieceAtTop).toBe(true);
   });
@@ -126,7 +122,6 @@ describe('GameState Integration Tests', () => {
         state = gameManager.getState();
       }
 
-      const beforeLines = state.linesCleared;
       const beforeScore = state.score;
 
       // Drop and lock
@@ -234,7 +229,6 @@ describe('GameState Integration Tests', () => {
 
     // At this point, piece should be landed
     // Move it left/right to reset lock delay
-    const beforeMove = state.currentPiece;
     gameManager.handleInput(Input.MOVE_LEFT);
     state = gameManager.getState();
     

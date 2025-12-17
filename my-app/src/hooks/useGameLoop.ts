@@ -10,8 +10,8 @@ export type GameLoopCallback = (deltaTime: number, elapsedTime?: number) => void
 
 export function useGameLoop(callback: GameLoopCallback, isActive = true) {
   const animationId = useRef<number | undefined>(undefined);
-  const lastTime = useRef<number>(performance.now());
-  const startTime = useRef<number>(performance.now());
+  const lastTime = useRef<number>(0);
+  const startTime = useRef<number>(0);
   const callbackRef = useRef<GameLoopCallback>(callback);
 
   // Keep callback ref up to date
@@ -25,6 +25,12 @@ export function useGameLoop(callback: GameLoopCallback, isActive = true) {
         cancelAnimationFrame(animationId.current);
       }
       return;
+    }
+
+    // Initialize timestamps on first tick
+    if (lastTime.current === 0) {
+      lastTime.current = performance.now();
+      startTime.current = lastTime.current;
     }
 
     function tick(currentTime: number) {

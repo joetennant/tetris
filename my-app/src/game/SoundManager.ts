@@ -16,11 +16,11 @@ export class SoundManager {
 
   private initAudio(): void {
     try {
-      this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      this.audioContext = new (window.AudioContext || (window as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
       this.masterVolume = this.audioContext.createGain();
       this.masterVolume.gain.value = 0.3;
       this.masterVolume.connect(this.audioContext.destination);
-    } catch (e) {
+    } catch {
       console.warn('Web Audio API not supported');
       this.enabled = false;
     }
