@@ -327,6 +327,30 @@ export class GameStateManager {
       return;
     }
 
+    // Handle audio toggles anytime
+    if (input === Input.TOGGLE_SOUND) {
+      const newEnabled = !soundManager.isEnabled();
+      soundManager.setEnabled(newEnabled);
+      soundManager.setMusicEnabled(newEnabled);
+      if (!newEnabled) {
+        soundManager.stopMusic();
+      } else if (this.state.gameStatus === GameStatus.PLAYING) {
+        soundManager.startMusic(this.state.fallSpeed);
+      }
+      return;
+    }
+
+    if (input === Input.TOGGLE_MUSIC) {
+      const newMusicEnabled = !soundManager.isMusicEnabled();
+      soundManager.setMusicEnabled(newMusicEnabled);
+      if (!newMusicEnabled) {
+        soundManager.stopMusic();
+      } else if (this.state.gameStatus === GameStatus.PLAYING) {
+        soundManager.startMusic(this.state.fallSpeed);
+      }
+      return;
+    }
+
     if (this.state.debugMode) {
       if (input === Input.DEBUG_LEVEL_UP) {
         this.state.level = Math.min(this.state.level + 1, 99);
@@ -387,17 +411,6 @@ export class GameStateManager {
       if (input === Input.NEW_GAME) {
         this.start();
         return;
-      }
-      // Handle sound toggle in any state
-      if (input === Input.TOGGLE_SOUND) {
-        const newEnabled = !soundManager.isEnabled();
-        soundManager.setEnabled(newEnabled);
-        soundManager.setMusicEnabled(newEnabled);
-        if (!newEnabled) {
-          soundManager.stopMusic();
-        } else if (this.state.gameStatus === GameStatus.PLAYING) {
-          soundManager.startMusic(this.state.fallSpeed);
-        }
       }
       return;
     }

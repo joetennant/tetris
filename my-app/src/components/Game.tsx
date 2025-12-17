@@ -63,9 +63,11 @@ export function Game() {
     onKey('g', () => handleInput(Input.TOGGLE_GHOST));
     onKey('G', () => handleInput(Input.TOGGLE_GHOST));
     
-    // Sound toggle
-    onKey('m', () => handleInput(Input.TOGGLE_SOUND));
+    // Sound toggles
+    onKey('m', () => handleInput(Input.TOGGLE_SOUND));  // Toggle all sounds
     onKey('M', () => handleInput(Input.TOGGLE_SOUND));
+    onKey('u', () => handleInput(Input.TOGGLE_MUSIC));  // Toggle music only
+    onKey('U', () => handleInput(Input.TOGGLE_MUSIC));
     
     // Debug controls
     onKey('d', () => handleInput(Input.DEBUG_TOGGLE));

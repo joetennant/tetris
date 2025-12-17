@@ -46,16 +46,24 @@ export function Controls() {
           <span>Toggle Ghost</span>
         </div>
         <div className="control-item">
-          <kbd>M</kbd>
-          <span>Toggle Music/Sound</span>
-        </div>
-        <div className="control-item">
           <kbd>P</kbd> <span>or</span> <kbd>Esc</kbd>
           <span>Pause</span>
         </div>
         <div className="control-item">
           <kbd>N</kbd>
           <span>New Game</span>
+        </div>
+      </div>
+
+      <div className="controls-section">
+        <h4>Audio</h4>
+        <div className="control-item">
+          <kbd>M</kbd>
+          <span>Mute All</span>
+        </div>
+        <div className="control-item">
+          <kbd>U</kbd>
+          <span>Mute Music</span>
         </div>
       </div>
     </div>

@@ -42,6 +42,7 @@ export const Input = {
   NEW_GAME: 'newGame',
   TOGGLE_GHOST: 'toggleGhost',
   TOGGLE_SOUND: 'toggleSound',
+  TOGGLE_MUSIC: 'toggleMusic',
   DEBUG_TOGGLE: 'debugToggle',
   DEBUG_LEVEL_UP: 'debugLevelUp',
   DEBUG_LEVEL_DOWN: 'debugLevelDown',
