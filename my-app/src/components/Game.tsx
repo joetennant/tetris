@@ -13,6 +13,7 @@ import { ScorePanel } from './ScorePanel';
 import { GameOverlay } from './GameOverlay';
 import { Controls } from './Controls';
 import { DebugPanel } from './DebugPanel';
+import { TetrisLogo } from './TetrisLogo';
 import { Input, GameStatus } from '../game/types';
 import { TetrominoController } from '../game/TetrominoController';
 
@@ -53,6 +54,10 @@ export function Game() {
     onKey('p', () => handleInput(Input.PAUSE));
     onKey('P', () => handleInput(Input.PAUSE));
     onKey('Escape', () => handleInput(Input.PAUSE));
+    
+    // New Game
+    onKey('n', () => handleInput(Input.NEW_GAME));
+    onKey('N', () => handleInput(Input.NEW_GAME));
     
     // Ghost piece toggle
     onKey('g', () => handleInput(Input.TOGGLE_GHOST));
@@ -103,6 +108,7 @@ export function Game() {
   return (
     <>
       <DebugPanel gameState={gameState} />
+      <TetrisLogo />
       <div className="game-container">
         <div className="game-main">
           <Playfield

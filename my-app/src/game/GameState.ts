@@ -383,6 +383,11 @@ export class GameStateManager {
           this.resume();
         }
       }
+      // Handle new game in any state
+      if (input === Input.NEW_GAME) {
+        this.start();
+        return;
+      }
       // Handle sound toggle in any state
       if (input === Input.TOGGLE_SOUND) {
         const newEnabled = !soundManager.isEnabled();
@@ -458,6 +463,10 @@ export class GameStateManager {
         break;
 
       case Input.RESTART:
+        this.start();
+        break;
+
+      case Input.NEW_GAME:
         this.start();
         break;
 

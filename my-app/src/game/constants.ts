@@ -19,11 +19,11 @@ export const GAME_CONFIG: GameConfig = {
   
   // Level progression
   INITIAL_LEVEL: 1,
-  LINES_PER_LEVEL: 10,
+  LINES_PER_LEVEL: 5,
   
   // Timing (all in milliseconds)
   BASE_FALL_SPEED: 1000,        // 1 second at level 1
-  FALL_SPEED_MULTIPLIER: 0.9,   // 10% faster per level
+  FALL_SPEED_MULTIPLIER: 0.85,   // 15% faster per level
   LOCK_DELAY: 500,
   MAX_LOCK_RESETS: 15,
   

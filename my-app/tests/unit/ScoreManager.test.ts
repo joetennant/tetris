@@ -81,47 +81,47 @@ describe('ScoreManager', () => {
   });
 
   describe('shouldLevelUp', () => {
-    // T097: Level increases at 10, 20, 30 lines cleared
-    it('should return true when crossing 10-line threshold', () => {
-      expect(scoreManager.shouldLevelUp(10, 1)).toBe(true);
-      expect(scoreManager.shouldLevelUp(20, 2)).toBe(true);
-      expect(scoreManager.shouldLevelUp(30, 3)).toBe(true);
-      expect(scoreManager.shouldLevelUp(100, 10)).toBe(true);
+    // T097: Level increases at 5, 10, 15 lines cleared
+    it('should return true when crossing 5-line threshold', () => {
+      expect(scoreManager.shouldLevelUp(5, 1)).toBe(true);
+      expect(scoreManager.shouldLevelUp(10, 2)).toBe(true);
+      expect(scoreManager.shouldLevelUp(15, 3)).toBe(true);
+      expect(scoreManager.shouldLevelUp(50, 10)).toBe(true);
     });
 
     it('should return false when not crossing threshold', () => {
-      expect(scoreManager.shouldLevelUp(5, 1)).toBe(false);
-      expect(scoreManager.shouldLevelUp(9, 1)).toBe(false);
-      expect(scoreManager.shouldLevelUp(15, 2)).toBe(false);
-      expect(scoreManager.shouldLevelUp(19, 2)).toBe(false);
+      expect(scoreManager.shouldLevelUp(4, 1)).toBe(false);
+      expect(scoreManager.shouldLevelUp(9, 2)).toBe(false);
+      expect(scoreManager.shouldLevelUp(14, 3)).toBe(false);
+      expect(scoreManager.shouldLevelUp(49, 10)).toBe(false);
     });
 
-    it('should handle edge case at exactly 10 lines per level', () => {
-      expect(scoreManager.shouldLevelUp(10, 1)).toBe(true);
-      expect(scoreManager.shouldLevelUp(20, 2)).toBe(true);
-      expect(scoreManager.shouldLevelUp(21, 2)).toBe(true);
+    it('should handle edge case at exactly 5 lines per level', () => {
+      expect(scoreManager.shouldLevelUp(5, 1)).toBe(true);
+      expect(scoreManager.shouldLevelUp(10, 2)).toBe(true);
+      expect(scoreManager.shouldLevelUp(11, 2)).toBe(true);
     });
   });
 
   describe('calculateFallSpeed', () => {
-    // T092: Fall speed decreases by 10% per level
-    it('should decrease fall speed by 10% per level', () => {
+    // T092: Fall speed decreases by 15% per level
+    it('should decrease fall speed by 15% per level', () => {
       const baseSpeed = 1000; // 1 second base
 
       // Level 1: 1000ms
       expect(scoreManager.calculateFallSpeed(1)).toBe(1000);
 
-      // Level 2: 1000 * 0.9 = 900ms
-      expect(scoreManager.calculateFallSpeed(2)).toBe(900);
+      // Level 2: 1000 * 0.85 = 850ms
+      expect(scoreManager.calculateFallSpeed(2)).toBe(850);
 
-      // Level 3: 1000 * 0.9^2 = 810ms
-      expect(scoreManager.calculateFallSpeed(3)).toBe(810);
+      // Level 3: 1000 * 0.85^2 = 722.5ms
+      expect(scoreManager.calculateFallSpeed(3)).toBeCloseTo(722.5, 1);
 
-      // Level 5: 1000 * 0.9^4 = 656.1ms
-      expect(scoreManager.calculateFallSpeed(5)).toBeCloseTo(656.1, 1);
+      // Level 5: 1000 * 0.85^4 = 522.01ms
+      expect(scoreManager.calculateFallSpeed(5)).toBeCloseTo(522.01, 1);
 
-      // Level 10: 1000 * 0.9^9 ≈ 387.42ms
-      expect(scoreManager.calculateFallSpeed(10)).toBeCloseTo(387.42, 1);
+      // Level 10: 1000 * 0.85^9 ≈ 231.62ms
+      expect(scoreManager.calculateFallSpeed(10)).toBeCloseTo(231.62, 1);
     });
 
     it('should handle level 1 as baseline', () => {
@@ -143,14 +143,14 @@ describe('ScoreManager', () => {
   describe('getLevel', () => {
     it('should calculate correct level from lines cleared', () => {
       expect(scoreManager.getLevel(0)).toBe(1);
-      expect(scoreManager.getLevel(5)).toBe(1);
-      expect(scoreManager.getLevel(9)).toBe(1);
-      expect(scoreManager.getLevel(10)).toBe(2);
-      expect(scoreManager.getLevel(15)).toBe(2);
-      expect(scoreManager.getLevel(19)).toBe(2);
-      expect(scoreManager.getLevel(20)).toBe(3);
-      expect(scoreManager.getLevel(50)).toBe(6);
-      expect(scoreManager.getLevel(100)).toBe(11);
+      expect(scoreManager.getLevel(4)).toBe(1);
+      expect(scoreManager.getLevel(5)).toBe(2);
+      expect(scoreManager.getLevel(9)).toBe(2);
+      expect(scoreManager.getLevel(10)).toBe(3);
+      expect(scoreManager.getLevel(14)).toBe(3);
+      expect(scoreManager.getLevel(15)).toBe(4);
+      expect(scoreManager.getLevel(50)).toBe(11);
+      expect(scoreManager.getLevel(100)).toBe(21);
     });
   });
 });

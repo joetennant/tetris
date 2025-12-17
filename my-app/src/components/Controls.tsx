@@ -53,6 +53,10 @@ export function Controls() {
           <kbd>P</kbd> <span>or</span> <kbd>Esc</kbd>
           <span>Pause</span>
         </div>
+        <div className="control-item">
+          <kbd>N</kbd>
+          <span>New Game</span>
+        </div>
       </div>
     </div>
   );

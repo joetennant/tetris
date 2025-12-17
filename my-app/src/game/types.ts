@@ -39,6 +39,7 @@ export const Input = {
   HOLD: 'hold',
   PAUSE: 'pause',
   RESTART: 'restart',
+  NEW_GAME: 'newGame',
   TOGGLE_GHOST: 'toggleGhost',
   TOGGLE_SOUND: 'toggleSound',
   DEBUG_TOGGLE: 'debugToggle',
