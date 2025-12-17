@@ -106,8 +106,6 @@ describe('ScoreManager', () => {
   describe('calculateFallSpeed', () => {
     // T092: Fall speed decreases by 15% per level
     it('should decrease fall speed by 15% per level', () => {
-      const baseSpeed = 1000; // 1 second base
-
       // Level 1: 1000ms
       expect(scoreManager.calculateFallSpeed(1)).toBe(1000);
 

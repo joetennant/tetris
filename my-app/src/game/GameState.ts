@@ -418,7 +418,7 @@ export class GameStateManager {
     let moved = false;
 
     switch (input) {
-      case Input.MOVE_LEFT:
+      case Input.MOVE_LEFT: {
         const movedLeft = this.controller.move(this.state.currentPiece, -1, 0);
         if (movedLeft) {
           this.state.currentPiece = movedLeft;
@@ -426,8 +426,9 @@ export class GameStateManager {
           soundManager.playMove();
         }
         break;
+      }
 
-      case Input.MOVE_RIGHT:
+      case Input.MOVE_RIGHT: {
         const movedRight = this.controller.move(this.state.currentPiece, 1, 0);
         if (movedRight) {
           this.state.currentPiece = movedRight;
@@ -435,37 +436,42 @@ export class GameStateManager {
           soundManager.playMove();
         }
         break;
+      }
 
-      case Input.ROTATE_CW:
+      case Input.ROTATE_CW: {
         const rotatedCW = this.controller.rotate(this.state.currentPiece, RotationDirection.CLOCKWISE);
         if (rotatedCW) {
           this.state.currentPiece = rotatedCW;
           moved = true;
         }
         break;
+      }
 
-      case Input.ROTATE_CCW:
+      case Input.ROTATE_CCW: {
         const rotatedCCW = this.controller.rotate(this.state.currentPiece, RotationDirection.COUNTER_CLOCKWISE);
         if (rotatedCCW) {
           this.state.currentPiece = rotatedCCW;
           moved = true;
         }
         break;
+      }
 
-      case Input.SOFT_DROP:
+      case Input.SOFT_DROP: {
         const droppedSoft = this.controller.move(this.state.currentPiece, 0, 1);
         if (droppedSoft) {
           this.state.currentPiece = droppedSoft;
           this.state.score += this.scoreManager.calculateDropScore(1, false);
         }
         break;
+      }
 
-      case Input.HARD_DROP:
+      case Input.HARD_DROP: {
         const result = this.controller.hardDrop(this.state.currentPiece, true);
         this.state.currentPiece = result.tetromino;
         this.state.score += this.scoreManager.calculateDropScore(result.distance, true);
         this.lockCurrentPiece();
         break;
+      }
 
       case Input.HOLD:
         this.handleHold();

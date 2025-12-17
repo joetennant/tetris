@@ -101,7 +101,7 @@ export function Game() {
       ...gameState.currentPiece,
       position: ghostPosition,
     };
-  }, [gameState?.currentPiece, gameState?.playfield]);
+  }, [gameState]);
 
   if (!gameState) {
     return <div>Loading...</div>;

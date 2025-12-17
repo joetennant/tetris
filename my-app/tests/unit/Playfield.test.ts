@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { Playfield } from '../../src/game/Playfield';
 import { createTetromino } from '../../src/game/tetrominoes';
-import type { Tetromino } from '../../src/game/types';
 
 describe('Playfield', () => {
   let playfield: Playfield;
